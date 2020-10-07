@@ -1,0 +1,6 @@
+A.Table Tennis Training
+1.如果A和B奇偶性相同，那么很显然直接靠近就好了。
+2.如果A和B奇偶性不同，那么只能要么往1靠要么往N靠
+
+B.Voting Judges
+
