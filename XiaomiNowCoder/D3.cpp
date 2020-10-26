@@ -9,18 +9,16 @@ bool vis[maxn];
 int low[maxn],dfn[maxn];
 int subN[maxn];
 bool isSPF[maxn];
-int dep[maxn];
-int root;
-void dfs(int x)
+void dfs(int x,int dep)
 {
     vis[x] = 1;
-    low[x] = dfn[x] = dep[x];
+    low[x] = dfn[x] = dep;
     fo(i,0,g[x].size()-1){
         int v=g[x][i];
         if(!vis[v]){
-            if(x==root)subN[x]++;
-            dep[v] = dep[x] + 1;
-            if(x!=root) low[x]=min(low[x],low[v]);
+            if(x==1)subN[x]++;
+            dfs(v,dep+1);
+            if(x!=1) low[x]=min(low[x],low[v]);
             if(low[v] >= dfn[x] && x!=1){
                 isSPF[x]=1;
                 subN[x]++;
@@ -31,17 +29,7 @@ void dfs(int x)
 }
 int fa[maxn];
 int find(int x){
-    int f = x;
-    while(fa[f] != f){
-        f = fa[f];
-    }
-    int ff=fa[x];
-    while(ff!=f){
-        ff = fa[x];
-        fa[x] = f;
-        x = ff;
-    }
-    return f;
+    return (x == fa[x] ? x : fa[x]=find(fa[x]));
 }
 bool fvis[maxn];
 int siz[maxn];
@@ -65,12 +53,10 @@ int main()
             cnt++;
         }
     }
-    dep[1] = 1;
-    root = n / 2 + 1;
-    dfs(root);
-    if(subN[root]>1){
-        isSPF[root]=1;
-        subN[root]--;
+    dfs(1,1);
+    if(subN[1]>1){
+        isSPF[1]=1;
+        subN[1]--;
     }
     fo(i,1,n){
         if(isSPF[i]){
